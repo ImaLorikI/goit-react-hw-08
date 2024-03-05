@@ -4,9 +4,9 @@ import { nanoid } from 'nanoid';
 
 import { Field, Formik, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import { addContacts } from '../redux/contact/selector';
 import { useId } from 'react';
 import { useDispatch } from 'react-redux';
+import { addContacts } from '../../redux/contact/operation';
 
 const FeedbackSchema = Yup.object().shape({
   name: Yup.string().min(3, 'Too Short!').max(50, 'Too Long!').required('Required name'),
@@ -39,7 +39,7 @@ export const ContactForm = () => {
   return (
     <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={FeedbackSchema}>
       <Form className={css.form}>
-        <div className={css.field}>
+        <div className={css.input}>
           <div className={css.divName}>
             <label htmlFor={idName}>Name</label>
             <Field type="text" name="name" id={idName} className={css.fieldInput} />
@@ -51,7 +51,7 @@ export const ContactForm = () => {
             <ErrorMessage name="number" component="span" className={css.error} />
           </div>
         </div>
-        <button type="submit" className={css.btn}>
+        <button type="submit" className={css.button}>
           Add contact
         </button>
       </Form>

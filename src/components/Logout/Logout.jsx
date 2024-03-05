@@ -9,7 +9,7 @@ export const Logout = () => {
 
   return (
     <>
-      <button className={css.btn} onClick={() => dispatch(logout(token_user))}>
+      <button className={css.button} onClick={() => dispatch(logout(token_user))}>
         Log out
       </button>
     </>
