@@ -4,10 +4,9 @@ import { nanoid } from 'nanoid';
 
 import { Field, Formik, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-
+import { addContacts } from '../redux/contact/selector';
 import { useId } from 'react';
 import { useDispatch } from 'react-redux';
-import { addContacts } from '../../redux/contact/operation';
 
 const FeedbackSchema = Yup.object().shape({
   name: Yup.string().min(3, 'Too Short!').max(50, 'Too Long!').required('Required name'),

@@ -15,7 +15,7 @@ const Contacts = () => {
 
   return (
     <main>
-      <ContactForm/>
+      <ContactForm />
       <SearchBar />
       <ContactList />
     </main>

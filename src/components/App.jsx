@@ -7,7 +7,7 @@ import { RestrictedRoute } from './RestrictedRoute';
 import { PrivateRoute } from './PrivateRoute';
 import { refreshUser } from '../redux/auth/operation';
 import { selectIsRefreshing } from '../redux/auth/selector';
-import { selectIsLoading } from '../redux/contacts/selector';
+import { selectIsLoading } from '../redux/contact/selector';
 
 const HomePage = lazy(() => import('../Pages/Home'));
 const RegisterPage = lazy(() => import('../Pages/Register'));
