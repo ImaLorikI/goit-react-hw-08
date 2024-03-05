@@ -12,24 +12,27 @@ import {
   PURGE,
   REGISTER,
 } from 'redux-persist';
-import { contactsReducer } from './contactsSlice';
-import { filtersReducer } from './filtersSlice';
+
+import { authReducer } from './auth/slice';
+
+
+import { contactReducer } from './contacts/contactsSlice';
+import { filterReducer } from './contacts/filtersSlice';
 
 const persistConfig = {
-  key: 'root',
-  version: 1,
+  key: 'auth',
   storage,
+  whitelist: ['token'],
 };
 
 const rootReducer = combineSlices({
-  filters: filtersReducer,
-  contacts: contactsReducer,
+  auth: persistReducer(persistConfig, authReducer),
+  contact: contactReducer,
+  filter: filterReducer,
 });
 
-const persistedTAskReducer = persistReducer(persistConfig, rootReducer);
-
 export const store = configureStore({
-  reducer: persistedTAskReducer,
+  reducer: rootReducer,
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
       serializableCheck: {
@@ -38,4 +41,4 @@ export const store = configureStore({
     }),
 });
 
-export const persister = persistStore(store);
+export const persistor = persistStore(store);

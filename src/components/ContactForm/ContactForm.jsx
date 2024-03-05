@@ -1,64 +1,59 @@
 import css from './ContactForm.module.css';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+
 import { nanoid } from 'nanoid';
+
+import { Field, Formik, Form, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
+
 import { useId } from 'react';
 import { useDispatch } from 'react-redux';
-import * as Yup from 'yup';
-// import { addContact } from '../../redux/contactsSlice';
-import { fetchAddContact } from '../../redux/operation';
+import { addContacts } from '../../redux/contact/operation';
 
-const dataSchema = Yup.object().shape({
+const FeedbackSchema = Yup.object().shape({
   name: Yup.string().min(3, 'Too Short!').max(50, 'Too Long!').required('Required name'),
   number: Yup.string()
     .min(3, 'Too Short!')
-    .max(10, 'Too Long!')
-    .matches(
-      /(?:([+]\d{1,4})[-.\s]?)?(?:[(](\d{1,3})[)][-.\s]?)?(\d{1,4})[-.\s]?(\d{1,4})[-.\s]?(\d{1,9})/g,
-      'Must be only digits'
-    )
-    .required('Required number'),
+    .max(50, 'Too Long!')
+    .required('Required number')
+    .matches(/^[0-9-+]+$/, 'Must be only digits'),
 });
 
-export const ContactForm = () => {
-  const nameFiealId = useId();
-  const numberFiealId = useId();
+const initialValues = {
+  name: '',
+  number: '',
+};
+
+export const ConctactForm = () => {
+  const idName = useId();
+  const idNumber = useId();
   const dispatch = useDispatch();
 
-  const handleSubmit = (values, actions) => {
+  const onSubmit = (values, actions) => {
     const newContact = {
+      id: nanoid(),
       name: values.name,
-      phone: values.number,
+      number: values.number,
     };
-
-    dispatch(fetchAddContact(newContact));
+    dispatch(addContacts(newContact));
     actions.resetForm();
   };
   return (
-    <Formik
-      initialValues={{
-        name: '',
-        number: '',
-      }}
-      onSubmit={handleSubmit}
-      validationSchema={dataSchema}
-    >
+    <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={FeedbackSchema}>
       <Form className={css.form}>
-        <div className={css.div}>
-          <div className={css.items}>
-            <label htmlFor={nameFiealId}> Username:</label>
-            <Field className={css.input} type="text" name="name" id={nameFiealId}></Field>
-            <ErrorMessage className={css.error} component="span" name="name" />
+        <div className={css.field}>
+          <div className={css.divName}>
+            <label htmlFor={idName}>Name</label>
+            <Field type="text" name="name" id={idName} className={css.fieldInput} />
+            <ErrorMessage name="name" component="span" className={css.error} />
           </div>
-          <div className={css.items}>
-            <label className={css.label} htmlFor={numberFiealId}>
-              Number:
-            </label>
-            <Field className={css.input} type="text" name="number" id={numberFiealId}></Field>
-            <ErrorMessage className={css.error} component="span" name="number" />
+          <div className={css.divNumber}>
+            <label htmlFor={idNumber}>Number</label>
+            <Field type="text" name="number" id={idNumber} className={css.fieldInput} />
+            <ErrorMessage name="number" component="span" className={css.error} />
           </div>
         </div>
-        <button type="submit" className={css.button}>
-          Add user
+        <button type="submit" className={css.btn}>
+          Add contact
         </button>
       </Form>
     </Formik>
